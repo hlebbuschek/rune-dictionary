@@ -481,3 +481,10 @@ document.querySelectorAll('.draggableElement').forEach((element) => {
   });
 });
 
+if ('ontouchstart' in window) {
+  // Mobile Touch Events aktivieren
+  enableTouchDragAndDrop();
+} else {
+  // Klassisches Drag & Drop aktivieren
+  enableMouseDragAndDrop();
+}
