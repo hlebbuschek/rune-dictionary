@@ -439,3 +439,41 @@ function hizufuegenBeschreibung(rune, lage) {
         </div>
       </div>`;
 }
+
+document.querySelectorAll(".draggableElement").forEach((element) => {
+  element.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    element.classList.add("dragging");
+
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
+  });
+
+  function handleTouchMove(event) {
+    let touch = event.touches[0];
+    let draggedElement = document.querySelector(".dragging");
+    
+    if (draggedElement) {
+      draggedElement.style.position = "absolute";
+      draggedElement.style.left = touch.pageX + "px";
+      draggedElement.style.top = touch.pageY + "px";
+    }
+  }
+
+  function handleTouchEnd(event) {
+    let draggedElement = document.querySelector(".dragging");
+    if (draggedElement) {
+      draggedElement.classList.remove("dragging");
+
+      let touch = event.changedTouches[0];
+      let targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+
+      if (targetElement && targetElement.classList.contains("lage")) {
+        targetElement.appendChild(draggedElement);
+      }
+    }
+
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+  }
+});
