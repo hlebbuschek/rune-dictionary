@@ -1,152 +1,6 @@
 // Live Server; Prettier - Code formatter; Reshaper 9 Keybiding
-
-const runen = [
-  {
-    buchstabe : 'f',
-    name : 'Fehu',
-    bedeutung : 'Rinder',
-    haupt : ['Heim', 'Geld'],
-    umdrehene : ['Problemen']
-  },{
-    buchstabe : 'u',
-    name : 'Ursuz',
-    bedeutung : 'Kraft',
-    haupt : ['Macht'],
-    umdrehene : ['']
-  },{
-    buchstabe : 'th',
-    name : 'Thurisaz',
-    bedeutung : 'Stachel',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'a',
-    name : 'Ansuz',
-    bedeutung : 'Götter',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'r',
-    name : 'Raido',
-    bedeutung : 'Weg',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'k',
-    name : 'Kenaz',
-    bedeutung : 'Feuer',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'g',
-    name : 'Gebo',
-    bedeutung : 'Geschenk',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'w',
-    name : 'Wunjo',
-    bedeutung : 'Glück',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'h',
-    name : 'Hagalaz',
-    bedeutung : 'Zerstörung',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'n',
-    name : 'Nauthiz',
-    bedeutung : 'Not',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'i',
-    name : 'Isaz',
-    bedeutung : 'Eis',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'j',
-    name : 'Jera',
-    bedeutung : 'Ernte',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'e',
-    name : 'Eihwaz',
-    bedeutung : 'Neuanfang',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'p',
-    name : 'Perth',
-    bedeutung : 'Schicksal',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'z',
-    name : 'Algiz',
-    bedeutung : 'Schutz',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 's',
-    name : 'Sowilo',
-    bedeutung : 'Sonne',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 't',
-    name : 'Tiwaz',
-    bedeutung : 'Mut',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'b',
-    name : 'Berkana',
-    bedeutung : 'Birke',
-    haupt : ['Früchtbarkeit'],
-    umdrehene : ['']
-  },{
-    buchstabe : 'e',
-    name : 'Ehwaz',
-    bedeutung : 'Pferd',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'm',
-    name : 'Mannaz',
-    bedeutung : 'Mensch',
-    haupt : ['Intuition'],
-    umdrehene : ['']
-  },{
-    buchstabe : 'l',
-    name : 'Laguz',
-    bedeutung : 'Wasser',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'ing',
-    name : 'Ingwaz',
-    bedeutung : 'Neuanfang',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'd',
-    name : 'Dagaz',
-    bedeutung : 'Tag',
-    haupt : [''],
-    umdrehene : ['']
-  },{
-    buchstabe : 'o',
-    name : 'Othala',
-    bedeutung : 'Erbe',
-    haupt : [''],
-    umdrehene : ['']
-  },
-];
+import { getRunen } from "./runen-list.js";
+const runen = getRunen();
 renderRunenListe();
 
 function renderRunenListe() {
@@ -154,7 +8,7 @@ function renderRunenListe() {
   runenListe.innerHTML = ''; 
   runen.forEach(item => {
       runenListe.innerHTML += `
-      <div class="kaestchen draggableElement" id="draggableElement_${item.name}" draggable="true">
+      <div class="draggableElement" id="draggableElement_${item.name}" draggable="true">
         <img src="img/runen/${item.name}.png" alt="${item.name}">
       </div>`;
   });
@@ -344,39 +198,44 @@ document.querySelectorAll('.layot').forEach((element) => {
       document.querySelector('.layot-zeichung')
       .innerHTML = matchingItem.zeichen(matchingItem.lagen);
       document.getElementById('layot-name').innerText = matchingItem.name;
-
-      document.querySelectorAll('.lage').forEach(lageElement => {
-        lageElement.addEventListener("dragover", (event) => {
-          event.preventDefault();
-          lageElement.style.borderColor = "rgb(26, 13, 0)";
-        });
-      
-        lageElement.addEventListener("dragleave", () => {
-          lageElement.style.borderColor = "rgba(26, 13, 0, 0.6)";
-        });
-      
-        lageElement.addEventListener("drop", (event) => {
-          event.preventDefault();
-          lageElement.style.borderColor = "rgba(26, 13, 0, 0.6)";
-      
-          const draggedElementId = event.dataTransfer.getData("text/plain");
-          const draggedElement = document.getElementById(draggedElementId);
-      
-          if (draggedElement) {
-            const existingRune = lageElement.querySelector(".draggableElement");
-            if (existingRune) {
-              returnRuneToList(existingRune);
-            }
-            lageElement.appendChild(draggedElement);
-            hizufuegenBeschreibung(getRuneById(draggedElementId), getLageById(matchingItem, lageElement.textContent.slice(0, 2)));
-          }
-        });
-      });
-        renderRunenListe();
-        document.querySelector('.layot-beschreibung').innerHTML = '';
+      initializeLageDropZone(matchingItem);
+      renderRunenListe();
+      enableTouchDragAndDrop();
+      document.querySelector('.layot-beschreibung').innerHTML = '';
     }
   });
 });
+
+function initializeLageDropZone(matchingItem) {
+  document.querySelectorAll('.lage').forEach(lageElement => {
+    lageElement.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      lageElement.style.borderColor = "rgb(26, 13, 0)";
+    });
+  
+    lageElement.addEventListener("dragleave", () => {
+      lageElement.style.borderColor = "rgba(26, 13, 0, 0.6)";
+    });
+  
+    lageElement.addEventListener("drop", (event) => {
+      event.preventDefault();
+      lageElement.style.borderColor = "rgba(26, 13, 0, 0.6)";
+  
+      const draggedElementId = event.dataTransfer.getData("text/plain");
+      const draggedElement = document.getElementById(draggedElementId);
+  
+      if (draggedElement) {
+        const existingRune = lageElement.querySelector(".draggableElement");
+        if (existingRune) {
+          returnRuneToList(existingRune);
+        }
+        lageElement.appendChild(draggedElement);
+        hizufuegenBeschreibung(getRuneById(draggedElementId), getLageById(matchingItem, lageElement.textContent.slice(0, 2)));
+      }
+    });
+  });
+}
+
 
 function returnRuneToList(runeElement) {
   const runenListe = document.querySelector('.runen-liste');
@@ -431,32 +290,27 @@ function hizufuegenBeschreibung(rune, lage) {
         <div class="rune-bedeutung">
           <b>${rune.name}</b>
           <span>(${rune.bedeutung})</span>
-
-            <p><ins>Hauptbedeutung: </ins><span class="beschreibung">${rune.haupt.toString()}</span></p>
-
-
-            <p><ins>Umdrehene Bedeutung: </ins><span class="beschreibung">${rune.umdrehene}</span></p>
-
+            <p><ins>Hauptbedeutung: </ins><span class="beschreibung">${rune.haupt.toString().replaceAll(',', ', ')}</span></p>
+            <p><ins>Umdrehene Bedeutung: </ins><span class="beschreibung">${rune.umgekehrte.toString().replaceAll(',', ', ')}</span></p>
         </div>
       </div>`;
 }
+
 function enableTouchDragAndDrop() {
   document.querySelectorAll('.draggableElement').forEach((element) => {
     element.addEventListener("touchstart", (event) => {
-      const touch = event.touches[0]; // Erster Touch-Punkt
-      event.target.style.position = "absolute"; // Position muss absolut sein
-      event.target.style.zIndex = 1000; // Damit es über anderen Elementen ist
-      
-      // Speichere die Start-Koordinaten
+      const touch = event.touches[0]; 
+      event.target.style.position = "absolute"; 
+      event.target.style.zIndex = 1000; 
+
       event.target.dataset.touchX = touch.clientX - event.target.getBoundingClientRect().left;
       event.target.dataset.touchY = touch.clientY - event.target.getBoundingClientRect().top;
     });
 
     element.addEventListener("touchmove", (event) => {
-      event.preventDefault(); // Verhindert das Scrollen während des Dragens
+      event.preventDefault();
       const touch = event.touches[0];
 
-      // Aktuelle Koordinaten berechnen
       const newX = touch.clientX - event.target.dataset.touchX;
       const newY = touch.clientY - event.target.dataset.touchY;
 
@@ -466,28 +320,16 @@ function enableTouchDragAndDrop() {
     });
 
     element.addEventListener("touchend", (event) => {
-      event.preventDefault(); // Verhindert seltsames Verhalten beim Loslassen
+      event.preventDefault(); 
 
-      // Prüfen, ob das Element über einer Lage ist
       const touch = event.changedTouches[0];
       const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
 
       if (targetElement && targetElement.classList.contains("lage")) {
-        targetElement.appendChild(event.target); // Rune in das Feld setzen
+        targetElement.appendChild(event.target); 
       }
-
-      // Position zurücksetzen, damit es korrekt platziert ist
       event.target.style.position = "static";
       event.target.style.zIndex = "auto";
     });
   });
 }
-
-if ('ontouchstart' in window) {
-  // Mobile Touch Events aktivieren
-  enableTouchDragAndDrop();
-} 
-// else {
-//   // Klassisches Drag & Drop aktivieren
-//   enableMouseDragAndDrop();
-// }
