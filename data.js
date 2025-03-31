@@ -441,7 +441,7 @@ function hizufuegenBeschreibung(rune, lage) {
 }
 
 document.querySelectorAll('.draggableElement').forEach((element) => {
-  element.addEventListener("ontouchstart", (event) => {
+  element.addEventListener("touchstart", (event) => {
     const touch = event.touches[0]; // Erster Touch-Punkt
     event.target.style.position = "absolute"; // Position muss absolut sein
     event.target.style.zIndex = 1000; // Damit es über anderen Elementen ist
@@ -451,7 +451,7 @@ document.querySelectorAll('.draggableElement').forEach((element) => {
     event.target.dataset.touchY = touch.clientY - event.target.getBoundingClientRect().top;
   });
 
-  element.addEventListener("ontouchmove", (event) => {
+  element.addEventListener("touchmove", (event) => {
     event.preventDefault(); // Verhindert das Scrollen während des Dragens
     const touch = event.touches[0];
 
@@ -464,7 +464,7 @@ document.querySelectorAll('.draggableElement').forEach((element) => {
     event.target.style.top = `${newY}px`;
   });
 
-  element.addEventListener("ontouchend", (event) => {
+  element.addEventListener("touchend", (event) => {
     event.preventDefault(); // Verhindert seltsames Verhalten beim Loslassen
 
     // Prüfen, ob das Element über einer Lage ist
