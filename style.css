@@ -1,6 +1,6 @@
 body {
   background-color: rgb(255, 230, 204);
-  font-family: "Rochester";
+  font-family: "Caveat", cursive;
   font-size: 25px;
 }
 main {
@@ -35,7 +35,7 @@ main {
 .draggableElement img {
   top: 10px;
 }
-.kaestchen {
+.kaestchen, .draggableElement {
   height: 90px;
   width: 100px;
   background-color: rgba(128, 64, 0, 0.575);
@@ -79,7 +79,8 @@ main {
   /* background-color: rgba(240, 159, 78, 0.726); */
   width: 1fr;
   border: 5px solid rgba(95, 94, 92, 0.5);
-  height: 105px;
+  min-height: 105px;
+  max-height: 105px;
 }
 
 .tisch {
