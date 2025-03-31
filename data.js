@@ -200,7 +200,7 @@ document.querySelectorAll('.layot').forEach((element) => {
       document.getElementById('layot-name').innerText = matchingItem.name;
       initializeLageDropZone(matchingItem);
       renderRunenListe();
-      enableTouchDragAndDrop();
+      enableTouchDragAndDrop(matchingItem);
       document.querySelector('.layot-beschreibung').innerHTML = '';
     }
   });
@@ -259,58 +259,55 @@ function returnRuneToList(runeElement) {
 }
 
 function getRuneById(id) {
-  let matchingItem;
-  runen.forEach(item => {
-    const name = id.slice(17);
-    if (name === item.name) {
-      matchingItem = item;
-    }
-  });
-  return matchingItem;
+  return runen.find(item => id.slice(17) === item.name);
 }
 
 function getLageById(layot, id) {
-  const matchingItem = layot.lagen.flat().find(lage => lage.num === Number(id));
-  return matchingItem;
+  return layot.lagen.flat().find(lage => lage.num === Number(id));
 }
 
 function hizufuegenBeschreibung(rune, lage) {
   const layotBeschreibungElement = document.querySelector('.layot-beschreibung');
   const existingLage = document.getElementById(lage.num);
   if (existingLage) {
-    layotBeschreibungElement.removeChild(existingLage);
+    existingLage.remove();
   }
-  layotBeschreibungElement
-    .innerHTML += `
-      <div id="${lage.num}">
-        <div class="lage-bedeutung">
-          <span>${lage.num}</span>
-          <span>${lage.bezeichnung}</span>
-        </div>
-        <div class="rune-bedeutung">
-          <b>${rune.name}</b>
-          <span>(${rune.bedeutung})</span>
-            <p><ins>Hauptbedeutung: </ins><span class="beschreibung">${rune.haupt.toString().replaceAll(',', ', ')}</span></p>
-            <p><ins>Umdrehene Bedeutung: </ins><span class="beschreibung">${rune.umgekehrte.toString().replaceAll(',', ', ')}</span></p>
-        </div>
-      </div>`;
+  const lageDiv = document.createElement("div");
+  lageDiv.id = `lage-${lage.num}`;
+  
+  lageDiv.innerHTML = `
+    <div class="lage-bedeutung">
+      <span>${lage.num}</span>
+      <span>${lage.bezeichnung}</span>
+    </div>
+    <div class="rune-bedeutung">
+      <b>${rune.name}</b>
+      <span>(${rune.bedeutung})</span>
+      <p><ins>Hauptbedeutung: </ins><span class="beschreibung">${rune.haupt.join(", ")}</span></p>
+      <p><ins>Umdrehene Bedeutung: </ins><span class="beschreibung">${rune.umgekehrte.join(", ")}</span></p>
+    </div>
+  `;
+
+  layotBeschreibungElement.appendChild(lageDiv);
 }
 
-function enableTouchDragAndDrop() {
+function enableTouchDragAndDrop(matchingItem) {
   document.querySelectorAll('.draggableElement').forEach((element) => {
     element.addEventListener("touchstart", (event) => {
-      const touch = event.touches[0]; 
-      event.target.style.position = "absolute"; 
-      event.target.style.zIndex = 1000; 
-
+      const touch = event.touches[0]; // Erster Touch-Punkt
+      event.target.style.position = "absolute"; // Position muss absolut sein
+      event.target.style.zIndex = 1000; // Damit es über anderen Elementen ist
+      
+      // Speichere die Start-Koordinaten
       event.target.dataset.touchX = touch.clientX - event.target.getBoundingClientRect().left;
       event.target.dataset.touchY = touch.clientY - event.target.getBoundingClientRect().top;
     });
 
     element.addEventListener("touchmove", (event) => {
-      event.preventDefault();
+      event.preventDefault(); // Verhindert das Scrollen während des Dragens
       const touch = event.touches[0];
 
+      // Aktuelle Koordinaten berechnen
       const newX = touch.clientX - event.target.dataset.touchX;
       const newY = touch.clientY - event.target.dataset.touchY;
 
@@ -320,16 +317,33 @@ function enableTouchDragAndDrop() {
     });
 
     element.addEventListener("touchend", (event) => {
-      event.preventDefault(); 
+      event.preventDefault(); // Verhindert seltsames Verhalten beim Loslassen
 
+      // Prüfen, ob das Element über einer Lage ist
       const touch = event.changedTouches[0];
       const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
 
       if (targetElement && targetElement.classList.contains("lage")) {
-        targetElement.appendChild(event.target); 
+        const existingRune = targetElement.querySelector('.draggableElement');
+        if (existingRune) {
+          returnRuneToList(existingRune);
+        }
+        targetElement.appendChild(event.target); // Rune in das Feld setzen
+        hizufuegenBeschreibung(getRuneById(event.target.id), getLageById(matchingItem, targetElement.textContent.slice(0, 2)));
       }
+
+      // Position zurücksetzen, damit es korrekt platziert ist
       event.target.style.position = "static";
       event.target.style.zIndex = "auto";
     });
   });
 }
+
+// if ('ontouchstart' in window) {
+//   // Mobile Touch Events aktivieren
+//   enableTouchDragAndDrop();
+// } 
+// // else {
+// //   // Klassisches Drag & Drop aktivieren
+// //   enableMouseDragAndDrop();
+// // }
