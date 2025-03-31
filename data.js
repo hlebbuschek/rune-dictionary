@@ -165,6 +165,7 @@ function renderRunenListe() {
       event.dataTransfer.setData("text/plain", element.id);
     });
   });
+  enableTouchDragAndDrop();
 }
 
 class Layot {
@@ -439,52 +440,54 @@ function hizufuegenBeschreibung(rune, lage) {
         </div>
       </div>`;
 }
+function enableTouchDragAndDrop() {
+  document.querySelectorAll('.draggableElement').forEach((element) => {
+    element.addEventListener("touchstart", (event) => {
+      const touch = event.touches[0]; // Erster Touch-Punkt
+      event.target.style.position = "absolute"; // Position muss absolut sein
+      event.target.style.zIndex = 1000; // Damit es über anderen Elementen ist
+      
+      // Speichere die Start-Koordinaten
+      event.target.dataset.touchX = touch.clientX - event.target.getBoundingClientRect().left;
+      event.target.dataset.touchY = touch.clientY - event.target.getBoundingClientRect().top;
+    });
 
-document.querySelectorAll('.draggableElement').forEach((element) => {
-  element.addEventListener("touchstart", (event) => {
-    const touch = event.touches[0]; // Erster Touch-Punkt
-    event.target.style.position = "absolute"; // Position muss absolut sein
-    event.target.style.zIndex = 1000; // Damit es über anderen Elementen ist
-    
-    // Speichere die Start-Koordinaten
-    event.target.dataset.touchX = touch.clientX - event.target.getBoundingClientRect().left;
-    event.target.dataset.touchY = touch.clientY - event.target.getBoundingClientRect().top;
+    element.addEventListener("touchmove", (event) => {
+      event.preventDefault(); // Verhindert das Scrollen während des Dragens
+      const touch = event.touches[0];
+
+      // Aktuelle Koordinaten berechnen
+      const newX = touch.clientX - event.target.dataset.touchX;
+      const newY = touch.clientY - event.target.dataset.touchY;
+
+      // Neue Position setzen
+      event.target.style.left = `${newX}px`;
+      event.target.style.top = `${newY}px`;
+    });
+
+    element.addEventListener("touchend", (event) => {
+      event.preventDefault(); // Verhindert seltsames Verhalten beim Loslassen
+
+      // Prüfen, ob das Element über einer Lage ist
+      const touch = event.changedTouches[0];
+      const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+
+      if (targetElement && targetElement.classList.contains("lage")) {
+        targetElement.appendChild(event.target); // Rune in das Feld setzen
+      }
+
+      // Position zurücksetzen, damit es korrekt platziert ist
+      event.target.style.position = "static";
+      event.target.style.zIndex = "auto";
+    });
   });
-
-  element.addEventListener("touchmove", (event) => {
-    event.preventDefault(); // Verhindert das Scrollen während des Dragens
-    const touch = event.touches[0];
-
-    // Aktuelle Koordinaten berechnen
-    const newX = touch.clientX - event.target.dataset.touchX;
-    const newY = touch.clientY - event.target.dataset.touchY;
-
-    // Neue Position setzen
-    event.target.style.left = `${newX}px`;
-    event.target.style.top = `${newY}px`;
-  });
-
-  element.addEventListener("touchend", (event) => {
-    event.preventDefault(); // Verhindert seltsames Verhalten beim Loslassen
-
-    // Prüfen, ob das Element über einer Lage ist
-    const touch = event.changedTouches[0];
-    const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
-
-    if (targetElement && targetElement.classList.contains("lage")) {
-      targetElement.appendChild(event.target); // Rune in das Feld setzen
-    }
-
-    // Position zurücksetzen, damit es korrekt platziert ist
-    event.target.style.position = "static";
-    event.target.style.zIndex = "auto";
-  });
-});
+}
 
 if ('ontouchstart' in window) {
   // Mobile Touch Events aktivieren
   enableTouchDragAndDrop();
-} else {
-  // Klassisches Drag & Drop aktivieren
-  enableMouseDragAndDrop();
-}
+} 
+// else {
+//   // Klassisches Drag & Drop aktivieren
+//   enableMouseDragAndDrop();
+// }
