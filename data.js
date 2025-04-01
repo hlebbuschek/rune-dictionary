@@ -1,5 +1,6 @@
 // Live Server; Prettier - Code formatter; Reshaper 9 Keybiding
 import { getRunen } from "./runen-list.js";
+import { getLayots } from "./layots-liste.js";
 const runen = getRunen();
 renderRunenListe();
 
@@ -45,140 +46,7 @@ class Layot {
   }
 };
 
-const layots = [{
-  id: 0,
-  name : 'Odin',
-  lagen : [[{
-    num: 1,
-    bezeichnung: 'Antwort'
-  }]]},{
-    id : 1,
-    name : 'Kreuz',
-    lagen : [[
-      {
-        num: 6,
-        bezeichnung: ''
-      }
-    ], [
-      {
-        num: 1,
-        bezeichnung: ''
-      }, {
-        num: 5,
-        bezeichnung: ''
-      }, {
-        num: 2,
-        bezeichnung : ''
-      }
-    ], [
-      {
-        num: 3,
-        bezeichnung: ''
-      }
-    ], [
-      {
-        num: 4,
-        bezeichnung: ''
-      }
-    ]]},{
-    id : 2,
-    name : `Vergangenheit\nund\nZukunft`,
-    lagen : [[{
-        num: 3,
-        bezeichnung: ''
-      }, {
-        num: 2,
-        bezeichnung: ''
-      }, {
-        num: 1,
-        bezeichnung: ''
-      }
-    ]]},{
-    id : 3,
-    name : 'Drei\nRunen',
-    lagen : [[
-      {
-        num: 1,
-        bezeichnung: ''
-      }, {
-        num: 2,
-        bezeichnung: ''
-      }, {
-        num: 3,
-        bezeichnung: ''
-      }]]},{
-    id : 4,
-    name : 'Feld',
-    lagen : [[
-      {
-        num: 12,
-        bezeichnung: ''
-      }, {
-        num: 11,
-        bezeichnung: ''
-      }, {
-        num: 10,
-        bezeichnung: ''
-      }, {
-        num: 9,
-        bezeichnung: ''
-      }, {
-        num: 8,
-        bezeichnung: ''
-      }, {
-        num: 7,
-        bezeichnung: ''
-      }], [{
-        num: 1,
-        bezeichnung: ''
-      }, {
-        num: 2,
-        bezeichnung: ''
-      }, {
-        num: 3,
-        bezeichnung: ''
-      }, {
-        num: 4,
-        bezeichnung: ''
-      }, {
-        num: 5,
-        bezeichnung: ''
-      }, {
-        num: 6,
-        bezeichnung: ''
-      }]]}, {
-    id : 5,
-    name : 'Piramide',
-    lagen : [[
-      {
-        num: 1,
-        bezeichnung: ''
-      }
-    ], [
-      {
-        num: 2,
-        bezeichnung: ''
-      }, {
-        num: 3,
-        bezeichnung: ''
-      }
-    ], [
-      {
-        num: 4,
-        bezeichnung: ''
-      }, {
-        num: 5,
-        bezeichnung: ''
-      }
-    ], [
-      {
-        num: 6,
-        bezeichnung: ''
-      }, {
-        num: 7,
-        bezeichnung: ''
-      }]]}
-].map((layot) => new Layot(layot.id, layot.name, layot.lagen)); 
+const layots = getLayots().map((layot) => new Layot(layot.id, layot.name, layot.lagen));;
 
 layots.forEach((item) => {
   document.querySelector('.layots-menu').innerHTML += `
@@ -192,16 +60,26 @@ layots.forEach((item) => {
 
 document.querySelectorAll('.layot').forEach((element) => {
   element.addEventListener('click', () => {
+    document.querySelector('.layot-beschreibung').innerHTML = '';
     const layotId = element.dataset.layotId;
     const matchingItem = layots.find(item => item.id == layotId);
     if (matchingItem) {
       document.querySelector('.layot-zeichung')
       .innerHTML = matchingItem.zeichen(matchingItem.lagen);
       document.getElementById('layot-name').innerText = matchingItem.name;
+      let counter = 0; 
+      matchingItem.lagen.forEach(row => {
+        counter += row.length;
+      });
+
+      for (let i = 1; i <= counter; i++) {
+        const lageDiv = document.createElement("div");
+        lageDiv.id = `lage-${i}`;
+        document.querySelector('.layot-beschreibung').appendChild(lageDiv);      
+      }
       initializeLageDropZone(matchingItem);
       renderRunenListe();
       enableTouchDragAndDrop(matchingItem);
-      document.querySelector('.layot-beschreibung').innerHTML = '';
     }
   });
 });
@@ -236,7 +114,6 @@ function initializeLageDropZone(matchingItem) {
   });
 }
 
-
 function returnRuneToList(runeElement) {
   const runenListe = document.querySelector('.runen-liste');
 
@@ -268,17 +145,11 @@ function getLageById(layot, id) {
 
 function hizufuegenBeschreibung(rune, lage) {
   const layotBeschreibungElement = document.querySelector('.layot-beschreibung');
-  const existingLage = document.getElementById(lage.num);
-  if (existingLage) {
-    existingLage.remove();
-  }
-  const lageDiv = document.createElement("div");
-  lageDiv.id = `lage-${lage.num}`;
-  
+  const lageDiv = document.getElementById(`lage-${lage.num}`);
   lageDiv.innerHTML = `
-    <div class="lage-bedeutung">
+    <div class="lage-bedeutung"">
       <span>${lage.num}</span>
-      <span>${lage.bezeichnung}</span>
+      <span>${lage.bezeichnung.replaceAll(' /', ',')}</span>
     </div>
     <div class="rune-bedeutung">
       <b>${rune.name}</b>
@@ -287,8 +158,6 @@ function hizufuegenBeschreibung(rune, lage) {
       <p><ins>Umdrehene Bedeutung: </ins><span class="beschreibung">${rune.umgekehrte.join(", ")}</span></p>
     </div>
   `;
-
-  layotBeschreibungElement.appendChild(lageDiv);
 }
 
 function enableTouchDragAndDrop(matchingItem) {
@@ -338,12 +207,3 @@ function enableTouchDragAndDrop(matchingItem) {
     });
   });
 }
-
-// if ('ontouchstart' in window) {
-//   // Mobile Touch Events aktivieren
-//   enableTouchDragAndDrop();
-// } 
-// // else {
-// //   // Klassisches Drag & Drop aktivieren
-// //   enableMouseDragAndDrop();
-// // }
