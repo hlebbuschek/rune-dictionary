@@ -1,9 +1,50 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0" version="27.2.0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0" version="28.0.4">
   <diagram name="Seite-1" id="0noiWWRTBtjfiI8HEenO">
-    <mxGraphModel>
+    <mxGraphModel dx="713" dy="1630" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="13" y="-16" width="118" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="152" y="-16" width="235" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="13" y="-76" width="514" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-4" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="81.5" y="-218" width="120" height="142" as="geometry" />
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="409" y="-16" width="118" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-8" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="1EbV5RE0Vnmst-pQJJob-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="-29" as="sourcePoint" />
+            <mxPoint x="270" y="-79" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-10" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="310" y="-421" width="33" height="345" as="geometry" />
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="1EbV5RE0Vnmst-pQJJob-11" target="1EbV5RE0Vnmst-pQJJob-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="212" y="-517" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-11" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="451.5" y="-421" width="33" height="345" as="geometry" />
+        </mxCell>
+        <mxCell id="1EbV5RE0Vnmst-pQJJob-12" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.138;entryY=0.021;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="1EbV5RE0Vnmst-pQJJob-10" target="1EbV5RE0Vnmst-pQJJob-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="206" y="-478" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
